@@ -67,21 +67,19 @@ pipeline {
         }
     }
      post {
-        success {
-            script {
-                def logContent = currentBuild.rawBuild.getLog(1000).join("\n")
-                mail to: 'pasanm16@gmail.com',
-                     subject: "Pipeline Succeeded",
-                     body: "The pipeline completed successfully.\n\nLog:\n${logContent}"
-            }
-        }
         failure {
-            script {
-                def logContent = currentBuild.rawBuild.getLog(1000).join("\n")
-                mail to: 'pasanm16@gmail.com',
-                     subject: "Pipeline Failed",
-                     body: "The pipeline failed.\n\nLog:\n${logContent}"
-            }
+            // Send a failure notification email with logs as attachments
+            emailext subject: 'Pipeline Failed',
+                body: 'The Jenkins pipeline has failed. Please check the logs for details.',
+                attachLog: true,
+                to: 'pasanm16@gmail.com'
+        }
+        success {
+            // Send a success notification email with logs as attachments
+            emailext subject: 'Pipeline Succeeded',
+                body: 'The Jenkins pipeline has succeeded.',
+                attachLog: true,
+                to: 'pasanm16@gmail.com'
+        }
     }
-}
 }
