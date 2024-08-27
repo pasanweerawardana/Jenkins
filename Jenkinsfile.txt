@@ -66,44 +66,21 @@ pipeline {
             }
         }
     }
-   post {
-        failure {
-            script {
-                try {
-                    emailext(
-                        subject: 'Pipeline Failed',
-                        body: """
-                        The Jenkins pipeline has failed. 
-                        Please check the logs for details.
-                        Job: ${env.JOB_NAME}
-                        Build Number: ${env.BUILD_NUMBER}
-                        Check the console output at ${env.BUILD_URL} to view the results.
-                        """,
-                        attachLog: true,
-                        to: 'pasanm16@gmail.com'
-                    )
-                } catch (Exception e) {
-                    echo "Failed to send email: ${e.message}"
-                }
-            }
-        }
-        success {
-            script {
-                try {
-                    emailext(
-                        subject: 'Pipeline Succeeded',
-                        body: """
-                        The Jenkins pipeline has succeeded.
-                        Job: ${env.JOB_NAME}
-                        Build Number: ${env.BUILD_NUMBER}
-                        Check the console output at ${env.BUILD_URL} to view the results.
-                        """,
-                        attachLog: true,
-                        to: 'pasanm16@gmail.com'
-                    )
-                } catch (Exception e) {
-                    echo "Failed to send email: ${e.message}"
-                }
+  post {
+    always {
+        script {
+            try {
+                emailext(
+                    subject: "Jenkins Pipeline Status: ${currentBuild.currentResult}",
+                    body: """
+                    The Jenkins pipeline has completed with status: ${currentBuild.currentResult}.
+                    Job: ${env.JOB_NAME}
+                    Build Number: ${env.BUILD_NUMBER}
+                    """,
+                    to: 'pasanm16@gmail.com'
+                )
+            } catch (Exception e) {
+                echo "Failed to send email: ${e.message}"
             }
         }
     }
