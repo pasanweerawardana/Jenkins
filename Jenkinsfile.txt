@@ -71,8 +71,7 @@ pipeline {
            mail to: 'pasanm16@gmail.com'
             emailext subject: 'Pipeline Succeeded',
                 body: 'The Jenkins pipeline has succeeded.',
-                attachLog: true,
-                
+                attachLog: true,        
         }
     }
 }
