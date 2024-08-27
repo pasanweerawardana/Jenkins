@@ -67,13 +67,6 @@ pipeline {
         }
     }
   post {
-        failure {
-          mail to: 'pasanm16@gmail.com'
-            emailext subject: 'Pipeline Failed',
-                body: 'The Jenkins pipeline has failed. Please check the logs for details.',
-                attachLog: true,
-                
-        }
         success {
            mail to: 'pasanm16@gmail.com'
             emailext subject: 'Pipeline Succeeded',
