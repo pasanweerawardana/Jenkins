@@ -66,12 +66,14 @@ pipeline {
             }
         }
     }
-  post {
-        success {
-           mail to: 'pasanm16@gmail.com',
-            emailext subject: 'Pipeline Succeeded',
-                body: 'The Jenkins pipeline has succeeded.',
-                attachLog: true        
-        }
+ post {
+    success {
+        emailext(
+            to: 'pasanm16@gmail.com',
+            subject: 'Pipeline Succeeded',
+            body: 'The Jenkins pipeline has succeeded.',
+            attachLog: true
+        )
     }
+}
 }
